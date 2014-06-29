@@ -2,6 +2,11 @@
 Changelog for package euscollada
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.6 (2014-06-30)
+------------------
+* package.xml: add collada_urdf to run_depend and build_depend
+* Contributors: Kei Okada
+
 0.1.5 (2014-06-29)
 ------------------
 * catkin.cmake: add *.yaml and *.sh to install
