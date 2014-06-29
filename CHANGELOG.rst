@@ -2,6 +2,9 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.5 (2014-06-29)
+------------------
+
 0.1.4 (2014-06-15)
 ------------------
 * update convex-decomposition parameters
