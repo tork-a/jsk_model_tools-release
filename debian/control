@@ -1,0 +1,12 @@
+Source: ros-groovy-euscollada
+Section: misc
+Priority: extra
+Maintainer: Yohei Kakiuchi <youhei@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), collada-dom-dev, libqhull-dev, libyaml-cpp-dev, ros-groovy-assimp-devel, ros-groovy-catkin, ros-groovy-cmake-modules, ros-groovy-collada-parser, ros-groovy-collada-urdf, ros-groovy-mk, ros-groovy-resource-retriever, ros-groovy-rosboost-cfg, ros-groovy-rosbuild, ros-groovy-roscpp, ros-groovy-rospack, ros-groovy-tf, ros-groovy-urdf, ros-groovy-urdfdom
+Homepage: http://ros.org/wiki/euscollada
+Standards-Version: 3.9.2
+
+Package: ros-groovy-euscollada
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, collada-dom-dev, libqhull-dev, libyaml-cpp-dev, ros-groovy-assimp-devel, ros-groovy-collada-parser, ros-groovy-resource-retriever, ros-groovy-roscpp, ros-groovy-rospack, ros-groovy-tf, ros-groovy-urdf, ros-groovy-urdfdom
+Description: euscollada
