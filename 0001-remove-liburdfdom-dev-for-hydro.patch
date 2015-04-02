@@ -1,4 +1,4 @@
-From 6889355afe19c909d316d4770f2d0561cecb2a74 Mon Sep 17 00:00:00 2001
+From 3d6a1928d8e8b8370b947f42254c6ac2db920222 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Fri, 19 Dec 2014 12:55:18 +0900
 Subject: [PATCH] remove liburdfdom-dev for hydro
@@ -8,7 +8,7 @@ Subject: [PATCH] remove liburdfdom-dev for hydro
  1 file changed, 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index 938de0f..ae02b57 100644
+index 1f3b55d..e5e021f 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -25,7 +25,6 @@
