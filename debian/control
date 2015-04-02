@@ -1,0 +1,12 @@
+Source: ros-indigo-eus-assimp
+Section: misc
+Priority: extra
+Maintainer: Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), pkg-config, ros-indigo-assimp-devel, ros-indigo-catkin, ros-indigo-euslisp
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-indigo-eus-assimp
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-assimp-devel, ros-indigo-roseus
+Description: eus_assimp
