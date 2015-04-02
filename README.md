@@ -1,3 +1,27 @@
+## jsk_model_tools (indigo) - 0.1.9-0
+
+The packages in the `jsk_model_tools` repository were released into the `indigo` distro by running `/var/lib/jenkins/send_to_bloom.py jsk-ros-pkg jsk_model_tools` on `Thu, 02 Apr 2015 04:29:46 -0000`
+
+These packages were released:
+- `eus_assimp`
+- `euscollada`
+- `jsk_model_tools`
+
+Version of package(s) in repository `jsk_model_tools`:
+- upstream repository: https://github.com/jsk-ros-pkg/jsk_model_tools
+- release repository: https://github.com/tork-a/jsk_model_tools-release.git
+- rosdistro version: `0.1.8-0`
+- old version: `0.1.8-0`
+- new version: `0.1.9-0`
+
+Versions of tools used:
+- bloom version: `0.5.18`
+- catkin_pkg version: `0.2.2`
+- rosdep version: `0.10.33`
+- rosdistro version: `0.4.0`
+- vcstools version: `0.1.33`
+
+
 ## jsk_model_tools (hydro) - 0.1.9-0
 
 The packages in the `jsk_model_tools` repository were released into the `hydro` distro by running `/var/lib/jenkins/send_to_bloom.py jsk-ros-pkg jsk_model_tools` on `Thu, 02 Apr 2015 04:23:54 -0000`
