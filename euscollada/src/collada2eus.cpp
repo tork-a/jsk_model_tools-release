@@ -307,8 +307,8 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
   int polylistElementCount = (int)(thisMesh->getPolylist_array().getCount());
   //Polygons
   int polygonesElementCount = (int)(thisMesh->getPolygons_array().getCount());
-  assert(polylistElementCount==0);
-  assert(polygonesElementCount==0);
+  //assert(polylistElementCount==0);
+  //assert(polygonesElementCount==0);
 }
 
 void writeGeometry(FILE *fp, daeDatabase *thisDatabase, const char* robot_name) {
@@ -1000,7 +1000,7 @@ int main(int argc, char* argv[]){
       add_joint_suffix = false;
       nargc--;
     } else if (strcmp(argv[i], "--verbose") == 0) {
-      verbose = false;
+      verbose = true;
       nargc--;
     }
   }
@@ -1059,10 +1059,21 @@ int main(int argc, char* argv[]){
     BOOST_FOREACH(string& limb, limb_candidates) {
 #ifdef USE_CURRENT_YAML
     if (doc[limb]) {
-      if (verbose) {
-        std::cerr << limb << "@" << doc[limb].size() << std::endl;
+      int line=-1;
+      ifstream fin2(yaml_filename); // super ugry hack until yaml-cpp 0.5.2
+      string buffer;
+      for (;fin2;) {
+        getline(fin2, buffer); line++;
+        if(buffer == limb+":") break;
       }
-      limb_order.push_back(pair<string, size_t>(limb, doc[limb].size()));
+      fin2.close();
+      if (verbose) {
+        std::cerr << limb << "@" << line  << std::endl;
+      }
+      if(line<0) {
+        std::cerr << limb << "@" << line << " someting is wrong..." << std::endl;
+      }
+      limb_order.push_back(pair<string, size_t>(limb, line));
     }
 #else
     if ( doc.FindValue(limb) ) {
@@ -1364,32 +1375,36 @@ int main(int argc, char* argv[]){
       }
       try {
         const YAML::Node& n = doc[limb_name+"-end-coords"]["translate"];
-        double value;
-        fprintf(output_fp, "     (send %s-end-coords :translate (float-vector", limb_name.c_str());
+        if ( n.size() > 0 ) {
+          double value;
+          fprintf(output_fp, "     (send %s-end-coords :translate (float-vector", limb_name.c_str());
 #ifdef USE_CURRENT_YAML
-        for(unsigned int i=0;i<3;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", 1000*n[i].as<double>());
+          for(unsigned int i=0;i<3;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", 1000*n[i].as<double>());
 #else
-        for(unsigned int i=0;i<3;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", 1000*value);}
+          for(unsigned int i=0;i<3;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", 1000*value);}
 #endif
-        fprintf(output_fp, "))\n");
+          fprintf(output_fp, "))\n");
+        }
       } catch(YAML::RepresentationException& e) {
       }
       try {
         const YAML::Node& n = doc[limb_name+"-end-coords"]["rotate"];
-        double value;
-        fprintf(output_fp, "     (send %s-end-coords :rotate", limb_name.c_str());
+        if ( n.size() > 0 ) {
+          double value;
+          fprintf(output_fp, "     (send %s-end-coords :rotate", limb_name.c_str());
 #if USE_CURRENT_YAML
-        for(unsigned int i=3;i<4;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", M_PI/180*n[i].as<double>());
+          for(unsigned int i=3;i<4;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", M_PI/180*n[i].as<double>());
 #else
-        for(unsigned int i=3;i<4;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", M_PI/180*value);}
+          for(unsigned int i=3;i<4;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", M_PI/180*value);}
 #endif
-        fprintf(output_fp, " (float-vector");
+          fprintf(output_fp, " (float-vector");
 #if USE_CURRENT_YAML
-        for(unsigned int i=0;i<3;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", n[i].as<double>());
+          for(unsigned int i=0;i<3;i++) fprintf(output_fp, " "FLOAT_PRECISION_FINE"", n[i].as<double>());
 #else
-        for(unsigned int i=0;i<3;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", value);}
+          for(unsigned int i=0;i<3;i++) { n[i]>>value; fprintf(output_fp, " "FLOAT_PRECISION_FINE"", value);}
 #endif
-        fprintf(output_fp, "))\n");
+          fprintf(output_fp, "))\n");
+        }
       } catch(YAML::RepresentationException& e) {
       }
       if(add_link_suffix) {
@@ -1512,7 +1527,8 @@ int main(int argc, char* argv[]){
 
   // when - angle-vector: reset-pose is defined in yaml file
   try {
-    doc["angle-vector"]["reset-pose"];
+    const YAML::Node& n = doc["angle-vector"]["reset-pose"];
+    if ( n.size() == 0 ) { fprintf(output_fp, "     ;; this robot does not have :reset-pose\n;;"); }
     fprintf(output_fp, "     (send self :reset-pose) ;; :set reset-pose\n\n");
   } catch(YAML::RepresentationException& e) {
   }
