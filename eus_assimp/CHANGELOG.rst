@@ -2,6 +2,11 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.12 (2015-05-07)
+-------------------
+* [jsk_model_tools] remove old rosmake files
+* Contributors: Kei Okada
+
 0.1.11 (2015-04-09)
 -------------------
 
