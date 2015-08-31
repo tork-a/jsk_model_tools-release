@@ -1,4 +1,4 @@
-From 781407eccba77b808c44cf6dcd312944e5acfdc4 Mon Sep 17 00:00:00 2001
+From 139dd866b8049de0dd3efef9bb50d875ed9887ba Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Fri, 19 Dec 2014 13:23:57 +0900
 Subject: [PATCH] remove urdfdom for indigo
@@ -8,7 +8,7 @@ Subject: [PATCH] remove urdfdom for indigo
  1 file changed, 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index 6c22344..5625bf5 100644
+index 0751a2c..912b6ff 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -24,7 +24,6 @@
