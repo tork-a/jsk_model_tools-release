@@ -107,6 +107,9 @@
                                &key ((:scale scl) 1.0) (gen-normal) (smooth-normal)
                                (split-large-mesh) (optimize-mesh) (identical-vertices)
                                &allow-other-keys)
+  (when (substringp ".wrl" fname)
+    (dump-glvertices-to-wrl fname glvtcs :scale scl)
+    (return-from save-mesh-file))
   (let ((mlst (glvtcs . gl::mesh-list))
         name-lst type-lst
         material-lst
@@ -187,7 +190,7 @@
               (if mat
                   (setf (cdr mat)
                         (list :material
-                              (list (llist :ambient (scale (* 0.8 (/ 1 255.0)) (coerce (his2rgb (* (/ (mod cntr color-num)
+                              (list (list :ambient (scale (* 0.8 (/ 1 255.0)) (coerce (his2rgb (* (/ (mod cntr color-num)
                                                                                               (float color-num)) 360) 1 1) float-vector)))
                                     (list :diffuse (scale (* 0.8 (/ 1 255.0)) (coerce (his2rgb (* (/ (mod cntr color-num)
                                                                                              (float color-num)) 360) 1 1) float-vector))))))
@@ -233,57 +236,6 @@
       r))
   )
 
-(defun make-glvertices-from-faceset (fs &key (material))
-  (let (mat)
-    (cond
-     (material (setq mat material))
-     ((get fs :face-color)
-      (let ((col (get fs :face-color)))
-        (unless (vectorp col)
-          (setq col (gl::find-color col)))
-        (setq mat
-              (list (list :ambient (float-vector (elt col 0) (elt col 1) (elt col 2)))
-                    (list :diffuse (float-vector (elt col 0) (elt col 1) (elt col 2)))))))
-     (t
-      ;; default material
-      (setq mat
-            (list (list :ambient (float-vector 0.65 0.65 0.65))
-                  (list :diffuse (float-vector 0.65 0.65 0.65))))))
-    (make-glvertices-from-faces (send fs :faces) :material mat)))
-
-(defun make-glvertices-from-faces (flst &key (material))
-  (setq flst (flatten (mapcar #'(lambda (f) (geometry::face-to-triangle-aux f)) flst)))
-  (let ((mat (make-matrix (* 3 (length flst)) 3))
-        (nom (make-matrix (* 3 (length flst)) 3))
-        (idx (instantiate integer-vector (* 3 (length flst))))
-        (cntr 0))
-    (dolist (f flst)
-      (let ((nm (normalize-vector (send f :normal)))
-            (vsl (send f :vertices)))
-        (c-matrix-row mat cntr (car vsl) t)
-        (c-matrix-row nom cntr nm t)
-        (incf cntr)
-
-        (c-matrix-row mat cntr (cadr vsl) t)
-        (c-matrix-row nom cntr nm t)
-        (incf cntr)
-
-        (c-matrix-row mat cntr (caddr vsl) t)
-        (c-matrix-row nom cntr nm t)
-        (incf cntr)
-        ))
-    (dotimes (i (length idx)) (setf (elt idx i) i))
-
-    (let ((msh
-           (list (list :type :triangles)
-                 (list :vertices mat)
-                 (list :normals nom)
-                 (list :indices idx))))
-      (when material
-        (push (list :material material) msh))
-      (instance gl::glvertices :init (list msh)))
-    ))
-
 (defun dump-to-meshfile (fname obj &rest args &key (material) &allow-other-keys)
   (let (faces)
     (cond
@@ -293,14 +245,14 @@
           (let (mat)
             (if material (setq mat material))
             ;; TODO: get color and set matterial
-            (push (funcall #'make-glvertices-from-faces faces :material mat) glv-lst)))
-        (apply #'store-glvertices fname (append-glvertices glv-lst) args)
+            (push (funcall #'gl::make-glvertices-from-faces faces :material mat) glv-lst)))
+        (apply #'save-mesh-file fname (append-glvertices glv-lst) args)
         ))
      ((find-method obj :faces)
       (setq faces (send obj :faces))
-      (apply #'store-glvertices
+      (apply #'save-mesh-file
              fname
-             (funcall #'make-glvertices-from-faces faces :material material) args))
+             (funcall #'gl::make-glvertices-from-faces faces :material material) args))
      (t
       (warn ";; face not found~%")
       ))
@@ -312,6 +264,38 @@
     (setq ret (apply #'make-cube (elt dsize 0) (elt dsize 1) (elt dsize 2) args))
     (send ret :translate-vertices (send cds :pos))
     ret))
+
+(defun sort-largest-meshes (glv-lst)
+  "sort meshes by their size of bounding box"
+  (when (derivedp glv-lst gl::glvertices)
+    (setq glv-lst (send glv-lst :glvertices)))
+  (sort glv-lst
+        #'(lambda (a b)
+            (>= (norm (send (send a :box) :diagonal))
+                (norm (send (send b :box) :diagonal)))))
+  glv-lst)
+
+(defun clustering-meshes-with-color (glv-lst &optional (diffuse :diffuse))
+  (when (derivedp glv-lst gl::glvertices)
+    (setq glv-lst (send glv-lst :glvertices)))
+  (let ((htbl (make-hash-table :test #'equal)))
+    (dolist (glv glv-lst)
+      (let* ((ambient
+              (cadr (assoc diffuse (cadr (assoc :material (car (glv . gl::mesh-list)))))))
+             (mlst (gethash ambient htbl)))
+        (cond
+         (mlst
+          (nconc mlst (list glv)))
+         (t
+          (setf (gethash ambient htbl) (list glv)))
+         )
+        ))
+    (let (ret)
+      (dolist (l (send htbl :list-values))
+        (if (cdr l)
+            (send (car l) :append-glvertices (cdr l)))
+        (push (car l) ret))
+      ret)))
 
 ;; urdf_to_collada -> collada2eus ..
 (defun update-to-original-meshfile (robot &key (scale 1000.0) (direction :z_up))
@@ -349,7 +333,6 @@
                ))
            (setq img (image::read-image-file fname))
            ;; TODO: check color-image24 and packed to RGB24bit
-           ;;(pprint (list fname img))
            (when img
              (nconc matinfo (list (list :teximage img))))
            ;;; load other method
