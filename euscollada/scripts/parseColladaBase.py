@@ -409,7 +409,7 @@ class yamlParser:
         self.yaml_data = yaml.load(open(fname).read())
 
     def add_sensor(self, xml_obj):
-        if 'sensors' in self.yaml_data:
+        if 'sensors' in self.yaml_data and self.yaml_data['sensors']:
             for sensor in self.yaml_data['sensors']:
                 translate = sensor['translate'] if sensor.has_key('translate') else None
                 rotate = sensor['rotate'] if sensor.has_key('rotate') else None
@@ -428,6 +428,9 @@ class yamlParser:
                 parent  = eff['parent'] if 'parent' in eff else None
                 root  = eff['root'] if 'root' in eff else 'BODY'
                 if not parent:
+                    if not self.yaml_data.has_key(limb):
+                        print >>sys.stderr, "cannot find limb: %s" %(limb)
+                        return
                     limb_lst = self.yaml_data[limb]
                     parent = limb_lst[-1].keys()[0].replace("JOINT", "LINK") # not goood!
                 xml_obj.add_manipulator('%s_end_coords'%limb, root, parent,
@@ -442,3 +445,51 @@ class yamlParser:
                                    sensor['parent_link'],
                                    None,
                                    translate = translate, rotate = rotate)
+    def replace_xmls(self, xml_obj):
+        if xml_obj.objtype == 'urdf' and 'replace_xmls' in self.yaml_data:
+            for replace_xml in self.yaml_data['replace_xmls']:
+                match_rule = replace_xml['match_rule']
+                target_tags = []
+                if match_rule.has_key('tag'):
+                    tags = xml_obj.doc.getElementsByTagName(match_rule['tag'])
+                    if match_rule.has_key('attribute_name'):
+                        attribute_name = str(match_rule['attribute_name'])
+                        attribute_value = str(match_rule['attribute_value'])
+                        matched_tags = [tag for tag in tags if tag.getAttribute(attribute_name) == attribute_value]
+                        target_tags = target_tags + matched_tags
+                    elif match_rule.has_key('sub_attribute_name'):
+                        sub_attribute_name = str(match_rule['sub_attribute_name'])
+                        sub_attribute_value = str(match_rule['sub_attribute_value'])
+                        for tag in tags:
+                            for sub_tag in tag.getElementsByTagName(match_rule['sub_tag']):
+                                if sub_tag.getAttribute(sub_attribute_name) == sub_attribute_value:
+                                    target_tags.append(tag)
+                    elif match_rule.has_key('parent_attribute_name'):
+                        parent_attribute_name = str(match_rule['parent_attribute_name'])
+                        parent_attribute_value = str(match_rule['parent_attribute_value'])
+                        parent_depth = 1
+                        if match_rule.has_key("parent_depth"):
+                            parent_depth = match_rule["parent_depth"]
+                        
+                        target_tags.extend([tag for tag in tags
+                                            if getParentNode(tag, parent_depth).getAttribute(parent_attribute_name) == parent_attribute_value])
+                else:
+                    raise Exception("yaml does not have tag section")
+                if len(target_tags) > 0:
+                    for tag in target_tags:
+                        parent = tag.parentNode
+                        # remove the tag
+                        if replace_xml.has_key('replaced_xml'):
+                            parent.removeChild(tag)
+                            parent.appendChild(parseString(str(replace_xml['replaced_xml'])).documentElement)
+                        elif replace_xml.has_key('replaced_attribute_value'):
+                            tag.setAttribute(str(match_rule['attribute_name']),
+                                             str(replace_xml['replaced_attribute_value']))
+                        else:
+                            raise Exception("No rule to replacement is specified")
+def getParentNode(node, depth):
+    if depth == 0:
+        return node
+    else:
+        return getParentNode(node.parentNode, depth - 1)
+            
