@@ -1,0 +1,12 @@
+Source: ros-hydro-eusurdf
+Section: misc
+Priority: extra
+Maintainer: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-hydro-catkin, ros-hydro-collada-urdf-jsk-patch, ros-hydro-euslisp
+Homepage: http://ros.org/wiki/eusurdf
+Standards-Version: 3.9.2
+
+Package: ros-hydro-eusurdf
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-hydro-collada-urdf-jsk-patch, ros-hydro-gazebo-ros, ros-hydro-roseus
+Description: urdf models converted from euslisp
