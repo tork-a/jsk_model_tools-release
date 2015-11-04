@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(euscollada)
 
-IF($ENV{ROS_DISTRO} STREQUAL "jade")
+IF($ENV{ROS_DISTRO} STREQUAL "indigo")
 find_package(catkin REQUIRED COMPONENTS collada_urdf rospack collada_parser resource_retriever)
 ELSE()
 find_package(catkin REQUIRED COMPONENTS collada_urdf rospack collada_parser urdfdom resource_retriever)
@@ -13,7 +13,7 @@ catkin_package()
 set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${CATKIN_DEVEL_PREFIX}/lib/pkgconfig")
 
 find_package(PkgConfig)
-IF($ENV{ROS_DISTRO} STREQUAL "jade")
+IF($ENV{ROS_DISTRO} STREQUAL "indigo")
 pkg_check_modules(urdf_dom urdfdom REQUIRED)
 ENDIF()
 pkg_check_modules(colladadom collada-dom-150 REQUIRED)
