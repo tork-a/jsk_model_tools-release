@@ -1,4 +1,4 @@
-From 137a14de4103a4e400592bca81c513f9c69fb0df Mon Sep 17 00:00:00 2001
+From 7ea528bb234f84a99006c97c32b1233a818f1c49 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Tue, 3 Nov 2015 16:07:45 +0900
 Subject: [PATCH 1/2] remove depend to urdfdom for indigo
