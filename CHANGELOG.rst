@@ -2,8 +2,10 @@
 Changelog for package eusurdf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.1.14 (2015-11-26)
--------------------
+0.2.0 (2015-11-26)
+------------------
+* move to 0.2.0, which only available from indigo
+
 * add instruction of converting eus->urdf
 * modify sample usage comment of irteus2urdf-for-gazebo.
 * use the resolved path of ros package to find eusurdf directory when path is nil. You can pass eusurdf path as argument to run in catkin build.
