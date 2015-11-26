@@ -2,6 +2,11 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.14 (2015-11-26)
+-------------------
+* [eus_assimp] Add .gitignore
+* Contributors: Kentaro Wada
+
 0.1.13 (2015-09-01)
 -------------------
 * move functions to jskeus
