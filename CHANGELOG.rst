@@ -2,8 +2,10 @@
 Changelog for package euscollada
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.1.14 (2015-11-26)
--------------------
+0.2.0 (2015-11-26)
+------------------
+* move to 0.2.0, which only available from indigo
+
 * keep backward compatibility, add glvertices slot to collada-body
 * [euscollada/src/euscollada-robot.l] use-6dof-joint-leg-gain nil by default
 * make qpqmodel with glvertices
