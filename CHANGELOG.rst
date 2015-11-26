@@ -2,8 +2,10 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.1.14 (2015-11-26)
--------------------
+0.2.0 (2015-11-26)
+------------------
+* move to 0.2.0, which only available from indigo
+
 * [eus_assimp] Add .gitignore
 * Contributors: Kentaro Wada
 
