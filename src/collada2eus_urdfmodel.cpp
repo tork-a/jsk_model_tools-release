@@ -573,7 +573,7 @@ void ModelEuslisp::copyRobotClassDefinition () {
     string path;
     rp.find("euscollada",euscollada_path);
 
-    euscollada_path += "/src/euscollada-robot_urdfmodel.l";
+    euscollada_path += "/src/euscollada-robot.l";
     ifstream fin(euscollada_path.c_str());
     string buf;
     while(fin && getline(fin, buf)) {
@@ -855,32 +855,36 @@ void ModelEuslisp::printEndCoords () {
       }
       try {
         const YAML::Node& n = doc[limb_name+"-end-coords"]["translate"];
-        double value;
-        fprintf(fp, "     (send %s-end-coords :translate (float-vector", limb_name.c_str());
+        if ( n.size() > 0 ) {
+          double value;
+          fprintf(fp, "     (send %s-end-coords :translate (float-vector", limb_name.c_str());
 #ifdef USE_CURRENT_YAML
-        for(unsigned int i = 0; i < 3; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", 1000*n[i].as<double>());
+          for(unsigned int i = 0; i < 3; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", 1000*n[i].as<double>());
 #else
-        for(unsigned int i = 0; i < 3; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", 1000*value);}
+          for(unsigned int i = 0; i < 3; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", 1000*value);}
 #endif
-        fprintf(fp, "))\n");
+          fprintf(fp, "))\n");
+        }
       } catch(YAML::RepresentationException& e) {
       }
       try {
         const YAML::Node& n = doc[limb_name+"-end-coords"]["rotate"];
-        double value;
-        fprintf(fp, "     (send %s-end-coords :rotate", limb_name.c_str());
+        if ( n.size() > 0 ) {
+          double value;
+          fprintf(fp, "     (send %s-end-coords :rotate", limb_name.c_str());
 #if USE_CURRENT_YAML
-        for(unsigned int i = 3; i < 4; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", M_PI/180*n[i].as<double>());
+          for(unsigned int i = 3; i < 4; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", M_PI/180*n[i].as<double>());
 #else
-        for(unsigned int i = 3; i < 4; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", M_PI/180*value);}
+          for(unsigned int i = 3; i < 4; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", M_PI/180*value);}
 #endif
-        fprintf(fp, " (float-vector");
+          fprintf(fp, " (float-vector");
 #if USE_CURRENT_YAML
-        for(unsigned int i = 0; i < 3; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", n[i].as<double>());
+          for(unsigned int i = 0; i < 3; i++) fprintf(fp, " "FLOAT_PRECISION_FINE"", n[i].as<double>());
 #else
-        for(unsigned int i = 0; i < 3; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", value);}
+          for(unsigned int i = 0; i < 3; i++) { n[i]>>value; fprintf(fp, " "FLOAT_PRECISION_FINE"", value);}
 #endif
-        fprintf(fp, "))\n");
+          fprintf(fp, "))\n");
+        }
       } catch(YAML::RepresentationException& e) {
       }
       if(add_link_suffix) {
@@ -1001,7 +1005,7 @@ void ModelEuslisp::printEndCoords () {
   fprintf(fp, "\n");
   // init ending
   fprintf(fp, "     ;; init-ending\n");
-  fprintf(fp, "     (send self :init-ending)\n\n");
+  fprintf(fp, "     (send self :init-ending :urdf)\n\n");
 
   // bodies
   fprintf(fp, "     ;; overwrite bodies to return draw-things links not (send link :bodies)\n");
@@ -1309,7 +1313,7 @@ void ModelEuslisp::printGeometry (boost::shared_ptr<Geometry> g, const Pose &pos
   string gname(name);
   if (g->type == Geometry::MESH) gname = ((Mesh *)(g.get()))->filename;
   fprintf(fp, "  (:_make_instance_%s ()\n", name.c_str());
-  fprintf(fp, "    (let (geom glvertices qhull\n");
+  fprintf(fp, "    (let (geom glv qhull\n");
   fprintf(fp, "          (local-cds (make-coords :pos ");
   fprintf(fp, "(float-vector "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE")",
               pose.position.x * 1000,
@@ -1348,21 +1352,21 @@ void ModelEuslisp::printGeometry (boost::shared_ptr<Geometry> g, const Pose &pos
     Vector3 scale = ((Mesh *)(g.get()))->scale;
     vector<coordT> points;
     if (scene && scene->HasMeshes() && !use_loadable_mesh) {
-      fprintf(fp, "      (setq glvertices\n");
+      fprintf(fp, "      (setq glv\n");
       fprintf(fp, "       (instance gl::glvertices :init\n");
       fprintf(fp, "                 (list ;; mesh list\n");
       // TODO: use g->scale
       printMesh(scene, scene->mRootNode, scale, material_name, points, true);
       fprintf(fp, "                  )\n");
       fprintf(fp, "                 ))\n");
-      fprintf(fp, "      (send glvertices :transform local-cds)\n");
-      fprintf(fp, "      (send glvertices :calc-normals)\n");
+      fprintf(fp, "      (send glv :transform local-cds)\n");
+      fprintf(fp, "      (send glv :calc-normals)\n");
     } else if (scene && scene->HasMeshes()) {
-      fprintf(fp, "      (setq glvertices (load-mesh-file (ros::resolve-ros-path \"%s\")\n", gname.c_str());
+      fprintf(fp, "      (setq glv (load-mesh-file (ros::resolve-ros-path \"%s\")\n", gname.c_str());
       fprintf(fp, "                                       :scale %f :process-max-quality t))\n", scale.x*1000);
       printMesh(scene, scene->mRootNode, scale, material_name, points, false);
-      fprintf(fp, "      (send glvertices :transform local-cds)\n");
-      fprintf(fp, "      (send glvertices :calc-normals)\n");
+      fprintf(fp, "      (send glv :transform local-cds)\n");
+      fprintf(fp, "      (send glv :calc-normals)\n");
     } else {
       // error
     }
@@ -1412,10 +1416,12 @@ void ModelEuslisp::printGeometry (boost::shared_ptr<Geometry> g, const Pose &pos
       }
     }
   }
+  if (g->type == Geometry::MESH) {
+    fprintf(fp, "      (setq (geom . gl::aglvertices) glv)\n");
+  }
   fprintf(fp, "      (setq geom (instance collada-body :init :replace-obj qhull :name \"%s\"))\n", gname.c_str());
   if (g->type == Geometry::MESH) {
-    fprintf(fp, "      (send geom :assoc glvertices)\n");
-    fprintf(fp, "      (setq (geom . glvertices) glvertices)\n");
+    fprintf(fp, "      (send geom :assoc glv)\n");
   }
   fprintf(fp, "      geom))\n");
 }
