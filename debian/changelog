@@ -1,0 +1,139 @@
+ros-jade-eus-assimp (0.2.1-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Thu, 26 Nov 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.2.0-0vivid) vivid; urgency=high
+
+  * move to 0.2.0, which only available from indigo
+  * [eus_assimp] Add .gitignore
+  * Contributors: Kentaro Wada
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 25 Nov 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.13-0vivid) vivid; urgency=high
+
+  * move functions to jskeus
+  * add function for glvertices
+  * fix minor bugs
+  * move functions to jskeus
+  * add dump-glvertices-to-wrl for creating wrl mesh file from glvertices
+  * 0.1.12
+  * update CHANGELOG (For releasing 0.1.12 DRC Final version)
+  * [jsk_model_tools] remove old rosmake files
+  * Contributors: Kei Okada, Yohei Kakiuchi, Iori Yanokura
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Mon, 31 Aug 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.12-0vivid) vivid; urgency=high
+
+  * [jsk_model_tools] remove old rosmake files
+  * Contributors: Kei Okada
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 06 May 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.11-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 08 Apr 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.10-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 01 Apr 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.9-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Tue, 31 Mar 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.8-0vivid) vivid; urgency=high
+
+  * fix for new euslisp layout
+  * eus_assimp: build_depend on pkg-config
+  * Contributors: Scott K Logan, Kei Okada
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Tue, 06 Jan 2015 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.7-0vivid) vivid; urgency=high
+
+  * fix parsing file extention, in order to use .stlb extention for exporting mesh as STL Binary format
+  * use tiff file for texture
+  * Contributors: Yohei Kakiuchi
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Thu, 18 Dec 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.6-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Sun, 29 Jun 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.5-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Sat, 28 Jun 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.4-0vivid) vivid; urgency=high
+
+  * update convex-decomposition parameters
+  * add include directory for SDL
+  * using SDL in hydro if exists
+  * Contributors: Yohei Kakiuchi
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Sat, 14 Jun 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.3-0vivid) vivid; urgency=high
+
+
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 30 Apr 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.2-0vivid) vivid; urgency=high
+
+  * Merge pull request #34 <https://github.com/jsk-ros-pkg/jsk_model_tools/issues/34> from k-okada/fix_to_pass_buildfirm
+    Fix to pass buildfirm
+  * Contributors: Kei Okada
+  * add depends to euslisp
+  * added euslisp_SOURCE_PREFIX for finding eusisp package path in catkin.cmake
+  * Contributors: Masaki Murooka
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 30 Apr 2014 15:00:00 -0000
+
+ros-jade-eus-assimp (0.1.1-0vivid) vivid; urgency=high
+
+  * (eus_assimp) update files for using assimp_devel in jsk_common (#20 <https://github.com/jsk-ros-pkg/jsk_model_tools/issues/20>)
+  * fix eus_assimp
+  * change store-glvertices to save-mesh-file
+  * add code for dumping textures
+  * fix default direction
+  * change: arguments pass to store-glvevrtices
+  * add check for recalc normal
+  * change post process methods
+  * add dump-to-meshfile to eus_assimp
+  * using assimp-read-image-file when c-assimp-load-image being defined
+  * change for preventing defun of unexisting function
+  * update for ignoring up_direction, refere to https://github.com/assimp/assimp/pull/60
+  * add function update-to-original-mesh for using original meshfile as visual
+  * fix make-cube-from-bounding-box
+  * add make-cube-from-bounding-box
+  * add make-glvertices-from-faces
+  * implement scale option of store-glvertices
+  * add assimp-read-image-file
+  * add :direction keyword to load-mesh-file
+  * add code for treating texture
+  * add parameter for convex_decomposition
+  * fix compiling with convex decomposition
+  * update convex decomposition code for eus_assimp
+  * temporary add CMakeLists.convexdecmop.txt
+  * add eus_assimp for eusing assimp library on EusLisp
+  * Contributors: Yohei Kakiuchi
+
+ -- Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>  Wed, 30 Apr 2014 15:00:00 -0000
+
+
