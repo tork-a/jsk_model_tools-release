@@ -1,10 +1,10 @@
-From c5eccd108f4113d6b512c889e56097bad0ffe6be Mon Sep 17 00:00:00 2001
+From b01ff793c5bb08c1cf9deb14b3d486ebf8c2e904 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Wed, 4 Nov 2015 21:09:13 +0900
 Subject: [PATCH 3/3] need check if jade
 
 ---
- CMakeLists.txt | 4 ++--
+ CMakeLists.txt |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
@@ -30,5 +30,5 @@ index 355901b..2a19a43 100644
  ENDIF()
  pkg_check_modules(colladadom collada-dom-150 REQUIRED)
 -- 
-1.9.1
+1.7.9.5
 
