@@ -65,8 +65,7 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
   fprintf(fp, "(defmethod %s_%s\n", robot_name, thisGeometry->getId());
   if ( thisMesh == NULL || triangleElementCount == 0 )  {
     fprintf(fp, "  (:init (&key (name))\n");
-    fprintf(fp, "         (replace-object self (make-cube 10 10 10))\n");
-    fprintf(fp, "         (if name (send self :name name))\n");
+    fprintf(fp, "         (send-super :init :name name)");
     fprintf(fp, "         self)\n");
     fprintf(fp, "   )\n");
     return;
@@ -76,13 +75,13 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
   } else {
     fprintf(fp, "  (:init (&key (name))\n");
   }
-  fprintf(fp, "         (replace-object self (send self :qhull-faceset))\n");
-  fprintf(fp, "         (if name (send self :name name))\n");
   fprintf(fp, "         (send self :def-gl-vertices)\n");
+  fprintf(fp, "         (send-super :init :name name :replace-obj (send self :qhull-faceset))\n");
+  fprintf(fp, "         (send self :assoc gl::aglvertices)\n");
   fprintf(fp, "         self)\n");
 
   fprintf(fp, "  (:def-gl-vertices ()\n");
-  fprintf(fp, "    (setq glvertices\n");
+  fprintf(fp, "    (setq gl::aglvertices\n");
   fprintf(fp, "       (instance gl::glvertices :init\n");
   fprintf(fp, "          (list\n"); // mesh-list
   // Triangulation
@@ -201,21 +200,21 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
       if (verbose) {
         fprintf(stderr, "numberOfVertices = %d\n", numberOfVertices);
       }
-      fprintf(fp, "           (list :vertices #2f(");
+      fprintf(fp, "            (list :vertices (let ((mat (make-matrix %d 3))) (fvector-replace (array-entity mat) #f(", numberOfVertices / 3);
       for(int i = 0; i < numberOfVertices / 3; i++) {
         // vertex vector
         float a0, a1, a2;
         a0 = thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3);
         a1 = thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3 + 1);
         a2 = thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3 + 2);
-        fprintf(fp, "("FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE")",
+        fprintf(fp, FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" ",
                 g_scale * 1000 * a0, g_scale * 1000 * a1, g_scale * 1000 * a2);
         // store vertex vector to qhull
         points.push_back(a0);
         points.push_back(a1);
         points.push_back(a2);
       }
-      fprintf(fp, "))\n"); // /vertices
+      fprintf(fp, ")) mat))\n"); // /vertices
       currentSource++;
       sourceElements--;
     }
@@ -224,21 +223,21 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
     if (sourceElements != 0) {
       if(noroffset == -255) {
         if(!!(thisMesh->getSource_array()[currentSource]->getFloat_array())) {
-          // normal vector shares same index of vertices
-          fprintf(fp, "         (list :normals #2f(");
           int numberOfNormals = thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().getCount();
+          // normal vector shares same index of vertices
+          fprintf(fp, "          (list :normals (let ((mat (make-matrix %d 3))) (fvector-replace (array-entity mat) #f(", numberOfNormals);
           if (verbose) {
             fprintf(stderr, "A:numberOfNormals = %d\n", numberOfNormals);
           }
           for (int i = 0; i < numberOfNormals; i++) {
             if (verbose) {
-              fprintf(stderr, "(%f %f %f)",
+              fprintf(stderr, FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" ",
                       thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3),
                       thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3 + 1),
                       thisMesh->getSource_array()[currentSource]->getFloat_array()->getValue().get(i * 3 + 2));
             }
           }
-          fprintf(fp, "))\n");  // /normals
+          fprintf(fp, ")) mat))\n");  // /normals
           currentSource++;
           sourceElements--;
         } else {
@@ -302,12 +301,8 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
     fprintf(fp, "           )\n");
   }
   fprintf(fp, "           )))\n");
-  fprintf(fp, "    (send glvertices :calc-normals)\n");
-  if (points.size() > 0) {
-    fprintf(fp, "    (send self :assoc glvertices)\n    glvertices)\n");
-  } else {
-    fprintf(fp, "    glvertices)\n");
-  }
+  fprintf(fp, "    (send gl::aglvertices :calc-normals)\n");
+  fprintf(fp, "    gl::aglvertices)\n");
 
   // do qhull
   if ( points.size() > 0 ) {
