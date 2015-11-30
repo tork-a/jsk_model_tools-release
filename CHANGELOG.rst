@@ -2,6 +2,16 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.1 (2015-11-27)
+------------------
+
+0.2.0 (2015-11-26)
+------------------
+* move to 0.2.0, which only available from indigo
+
+* [eus_assimp] Add .gitignore
+* Contributors: Kentaro Wada
+
 0.1.13 (2015-09-01)
 -------------------
 * move functions to jskeus
