@@ -6,23 +6,23 @@
   )
 (defmethod euscollada-robot
   (:init-ending
-   ()
-   ;; fix all links' mass properties ;; root link relative (collada) -> link local (euslisp)
-   (dolist (l links)
-     (setq (l . acentroid) (send l :inverse-transform-vector
-                                 (send (send (car links) :worldcoords) :transform-vector
-                                       (l . acentroid))))
-     (setq (l . inertia-tensor) (m* (transpose (send l :worldrot))
-                                    (m* (send (car links) :worldrot)
-                                        (l . inertia-tensor))))
-     )
+   (&optional (type :collada))
+   (when (eq type :collada)
+     ;; fix all links' mass properties ;; root link relative (collada) -> link local (euslisp)
+     (dolist (l links)
+       (setq (l . acentroid) (send l :inverse-transform-vector
+                                   (send (send (car links) :worldcoords) :transform-vector
+                                         (l . acentroid))))
+       (setq (l . inertia-tensor) (m* (transpose (send l :worldrot))
+                                      (m* (send (car links) :worldrot)
+                                          (l . inertia-tensor))))
+       ))
    (send-super :init-ending)
    (send self :make-collision-model-for-links)
-
    ;;
    (dolist (j (mapcan #'(lambda (x) (if (and (derivedp (cdr x) joint)
-					     (not (memq (cdr x) (send self :joint-list))))
-					(list (cdr x)))) (send self :slots)))
+                                             (not (memq (cdr x) (send self :joint-list))))
+                                        (list (cdr x)))) (send self :slots)))
      (send (send j :child-link) :add-joint j)
      (send (send j :child-link) :add-parent-link (send j :parent-link))
      (send (send j :parent-link) :add-child-links (send j :child-link)))
@@ -37,7 +37,7 @@
   ;;  reduce root-link's weight based on leg's joint limit
   ;;  increase stop and cog-gain
   (:fullbody-inverse-kinematics
-   (target-coords &rest args &key (stop 250) (cog-gain 2.0) (additional-weight-list) &allow-other-keys)
+   (target-coords &rest args &key (stop 250) (cog-gain 2.0) (additional-weight-list) (use-6dof-joint-leg-gain nil) &allow-other-keys)
    (let* ((leg-ul (send self :calc-union-link-list (send self :legs :links))))
      (send self :reset-joint-angle-limit-weight-old leg-ul)
      (send-message* self robot-model :fullbody-inverse-kinematics
@@ -46,70 +46,89 @@
                     :additional-weight-list
                     (append
                      additional-weight-list
-                     (list
-                      (list (car (send self :links))
-                            #'(lambda ()
-                                ;; set root-link 6dof-joint's weight based on legs' joint limit
-                                (let* ((min-weight
-                                        (reduce #'(lambda (x y) (min x y))
-                                                (coerce (send self :calc-inverse-kinematics-weight-from-link-list
-                                                              leg-ul :union-link-list leg-ul) cons))))
-                                  (fill (instantiate float-vector 6) min-weight)))
-                            )
-                      ))
+                     (if use-6dof-joint-leg-gain
+                         (list
+                          (list (car (send self :links))
+                                #'(lambda ()
+                                    ;; set root-link 6dof-joint's weight based on legs' joint limit
+                                    (let* ((min-weight
+                                            (reduce #'(lambda (x y) (min x y))
+                                                    (coerce (send self :calc-inverse-kinematics-weight-from-link-list
+                                                                  leg-ul :union-link-list leg-ul) cons))))
+                                      (fill (instantiate float-vector 6) min-weight)))
+                                )
+                          )))
                     args)
      ))
   ;; make collision model from faces or gl-vertices
   (:make-collision-model-for-links
    (&key (fat 0) (collision-func 'pqp-collision-check) ((:links ls) (send self :links)))
    (dolist (ll ls)
-     (send ll
-           (read-from-string
-            (format nil ":make-~Amodel"
-                    (string-right-trim "-COLLISION-CHECK" (string collision-func))))
-           :fat fat
-           :faces (flatten (mapcar #'(lambda (x)
-                                       (cond
-                                        ((find-method x :def-gl-vertices)
-                                         (send (x . glvertices) :convert-to-faces :wrt :world))
-                                        (t
-                                         (send x :faces))))
-                                   (send ll :bodies)))))
-   )
+     (let (fs glv usefs)
+       (dolist (bd (send ll :bodies))
+         (if (find-method bd :def-gl-vertices)
+             (push (send bd :glvertices) glv)
+           (push (send bd :faces) fs)))
+       (setq fs (flatten fs))
+       (cond
+        ((and (not fs) glv) ;; if there is no faces, use glvertices for creating pqpmodel
+         (setq usefs (instance gl::glvertices :init nil))
+         (send usefs :transform (send (car glv) :worldcoords))
+         (send usefs :append-glvertices glv)
+         (let ((m (send usefs (read-from-string
+                               (format nil ":make-~Amodel"
+                                       (string-right-trim "-COLLISION-CHECK" (string collision-func))))
+                        :fat fat)))
+           (setf (get ll :pqpmodel) m)
+           ))
+        (fs
+         (setq usefs
+               (append fs
+                       (mapcar #'(lambda (gv) (send gv :convert-to-faces :wrt :world)) glv)))
+         (send ll
+               (read-from-string
+                (format nil ":make-~Amodel"
+                        (string-right-trim "-COLLISION-CHECK" (string collision-func))))
+               :fat fat
+               :faces usefs))
+        ))
+     ))
   )
 
 ;; copy euscollada-body class definition from euscollada/src/euscollada-robot.l
+;; This euscollada-body class is for bodies in robot model converted from collada files.
 (defclass collada-body
-  :super body
-  :slots (glvertices)
+  :super gl::glbody
+  :slots (glvertices) ;; glvertices slot for backward compatibility
   )
 (defmethod collada-body
-  (:draw (vwr)
-   (when glvertices
-     (send glvertices :draw vwr)))
-  (:set-color (&rest args)
-   (send-super* :set-color args)
-   (when glvertices (send* glvertices :set-color args)))
+  (:init (&key (name) (replace-obj))
+    (if replace-obj
+        (replace-object self replace-obj)
+      (replace-object self (make-cube 10 10 10)))
+    (if name (send self :name name))
+    (setq glvertices gl::aglvertices)
+    self)
   (:change-visual
    (&optional (visual :convex))
    (case visual
      ((list :convex :hull :convex-hull)
       (unless (send self :get :original-mesh)
-        (send self :put :original-mesh glvertices)) ;; store original mesh
+        (send self :put :original-mesh gl::aglvertices)) ;; store original mesh
       (let* ((org-mesh (send self :get :original-mesh))
              (org-cds (send org-mesh :copy-worldcoords))
              (glv (gl::make-glvertices-from-faces (send self :faces))))
         (send glv :set-offset (send org-cds :inverse-transformation))
         (send glv :transform org-cds)
         (send org-mesh :assoc glv)
-        (setq glvertices glv)
+        (setq gl::aglvertices glv)
         glv))
      ((list :original :mesh :glvertices :original-mesh)
       (let ((org-mesh (send self :get :original-mesh)))
         (when org-mesh
           (dolist (d (send org-mesh :descendants)) ;; dissoc all discendants
             (send org-mesh :dissoc d))
-          (setq glvertices org-mesh)
+          (setq gl::aglvertices org-mesh)
           org-mesh)))
      ))
   )
