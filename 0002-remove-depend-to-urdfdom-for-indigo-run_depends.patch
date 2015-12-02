@@ -1,14 +1,14 @@
-From 1f6a7654511b66fed067de7d11685f16f6801d40 Mon Sep 17 00:00:00 2001
+From 72c97c604cac03017dd09d8ecb94ed3128fd2876 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Tue, 3 Nov 2015 16:13:40 +0900
-Subject: [PATCH 2/3] remove depend to urdfdom for indigo (run_depends)
+Subject: [PATCH 2/2] remove depend to urdfdom for indigo (run_depends)
 
 ---
  package.xml |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/package.xml b/package.xml
-index b32ceed..3f9001f 100644
+index 19867c9..591f35b 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -43,7 +43,7 @@
