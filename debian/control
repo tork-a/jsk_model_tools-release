@@ -1,0 +1,12 @@
+Source: ros-jade-eus-assimp
+Section: misc
+Priority: extra
+Maintainer: Yohei Kakiuchi <youhei@jsk.imi.i.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), pkg-config, ros-jade-assimp-devel, ros-jade-catkin, ros-jade-euslisp
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jade-eus-assimp
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jade-assimp-devel, ros-jade-roseus
+Description: eus_assimp
