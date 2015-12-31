@@ -2,6 +2,11 @@
 Changelog for package eus_assimp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.3 (2015-12-31)
+------------------
+* [eus_assimp] fix function name
+* Contributors: Yohei Kakiuchi
+
 0.2.2 (2015-12-11)
 ------------------
 
