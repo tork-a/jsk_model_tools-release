@@ -1,10 +1,10 @@
-From 149651f9ec563014628e8efbf1da5296b0d4dcad Mon Sep 17 00:00:00 2001
+From fcf3480890abae6f9ed0eda16bd46c8c49c9b767 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Tue, 3 Nov 2015 16:13:40 +0900
 Subject: [PATCH 2/2] remove depend to urdfdom for indigo (run_depends)
 
 ---
- package.xml |    2 +-
+ package.xml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/package.xml b/package.xml
@@ -21,5 +21,5 @@ index 41bc8b2..2d4ad46 100644
    <run_depend>tf</run_depend>
    <run_depend>collada_urdf</run_depend>
 -- 
-1.7.9.5
+1.9.1
 
