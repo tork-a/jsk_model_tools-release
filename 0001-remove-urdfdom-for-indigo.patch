@@ -1,14 +1,14 @@
-From 0c410954c84bc3b62a7669bcd29f27e64e0d0785 Mon Sep 17 00:00:00 2001
+From a2132142b1ad4f4576a931d917e730e9b6223a15 Mon Sep 17 00:00:00 2001
 From: Kei Okada <kei.okada@gmail.com>
 Date: Fri, 19 Dec 2014 13:23:57 +0900
 Subject: [PATCH] remove urdfdom for indigo
 
 ---
- package.xml |    2 --
+ package.xml | 2 --
  1 file changed, 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index 5eeb617..a07c8fd 100644
+index e1e7399..42df631 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -24,7 +24,6 @@
@@ -28,5 +28,5 @@ index 5eeb617..a07c8fd 100644
    <run_depend>tf</run_depend>
    <run_depend>collada_urdf</run_depend>
 -- 
-1.7.9.5
+1.9.0
 
