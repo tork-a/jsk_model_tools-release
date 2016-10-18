@@ -311,11 +311,18 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
 
   // do qhull
   if ( points.size() > 0 ) {
+      if (verbose) {
+        fprintf(stderr, "qhull: points = %d\n", points.size());
+      }
       char qhull_attr[] = "qhull C-0.001";
       FILE* dev_null = fopen("/dev/null", "w");
       int ret = qh_new_qhull (3, points.size()/3, &points[0], 0, qhull_attr, NULL, verbose ? stderr: dev_null);
+      fclose(dev_null);
       fprintf(fp, "  (:qhull-faceset ()\n");
       if ( ret ) {
+        if (verbose) {
+          fprintf(stderr, "qhull: failed = %d\n", points.size());
+        }
         fprintf(fp, "   (instance faceset :init :faces (list\n");
 	for (unsigned int i = 0; i < points.size()/9; i++ ) {
           fprintf(fp, "    (instance face :init :vertices (list (float-vector "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE") (float-vector "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE") (float-vector "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE" "FLOAT_PRECISION_FINE")))\n",
@@ -325,6 +332,9 @@ void writeTriangle(FILE *fp, domGeometry *thisGeometry, const char* robot_name) 
 	}
 	fprintf(fp, "    ))\n");
       } else {
+        if (verbose) {
+          fprintf(stderr, "qhull: successed = %d\n", points.size(), qh num_facets);
+        }
         fprintf(fp, "   ;; qhull %zd -> %d faces\n", points.size()/3, qh num_facets);
         fprintf(fp, "   (instance faceset :init :faces (list\n");
         // get faces
@@ -1604,10 +1614,12 @@ int main(int argc, char* argv[]){
       }
       fprintf(output_fp,
               "\n"
-              "    (:%s (&optional (limbs '(%s)))\n"
+              "    (:%s\n"
+              "      (&optional (limbs '(%s)))\n"
+              "      \"\"\"Predefined pose named %s.\"\"\"\n"
               "      (unless (listp limbs) (setq limbs (list limbs)))\n"
               "      (dolist (limb limbs)\n"
-              "        (case limb", name.c_str(), limbs_symbols.c_str());
+              "        (case limb", name.c_str(), limbs_symbols.c_str(), name.c_str());
 #ifdef USE_CURRENT_YAML
       const YAML::Node& v = it->second;
 #else
