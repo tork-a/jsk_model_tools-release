@@ -1,0 +1,12 @@
+Source: ros-indigo-eusurdf
+Section: misc
+Priority: extra
+Maintainer: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), ros-indigo-catkin, ros-indigo-collada-urdf-jsk-patch, ros-indigo-roseus, ros-indigo-rostest
+Homepage: http://ros.org/wiki/eusurdf
+Standards-Version: 3.9.2
+
+Package: ros-indigo-eusurdf
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-collada-urdf-jsk-patch, ros-indigo-gazebo-ros, ros-indigo-rostest
+Description: urdf models converted from euslisp
