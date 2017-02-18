@@ -1,0 +1,31 @@
+From ec6d4259ba38abfcb26e9d2a4e79af7ae3f0450d Mon Sep 17 00:00:00 2001
+From: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Date: Sat, 18 Feb 2017 23:08:01 +0900
+Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
+ kinetic
+
+---
+ package.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/package.xml b/package.xml
+index 1a885f2..0136af2 100644
+--- a/package.xml
++++ b/package.xml
+@@ -17,11 +17,11 @@
+ 
+   <buildtool_depend>catkin</buildtool_depend>
+ 
+-  <build_depend>collada_urdf_jsk_patch</build_depend>
++  <build_depend>collada_urdf</build_depend>
+   <build_depend>roseus</build_depend>
+   <build_depend>rostest</build_depend>
+ 
+-  <run_depend>collada_urdf_jsk_patch</run_depend>
++  <run_depend>collada_urdf</run_depend>
+   <run_depend>gazebo_ros</run_depend>
+   <run_depend>python-lxml</run_depend>
+   <run_depend>rostest</run_depend>
+-- 
+1.9.1
+
