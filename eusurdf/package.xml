@@ -1,6 +1,6 @@
 <package>
   <name>eusurdf</name>
-  <version>0.2.5</version>
+  <version>0.3.3</version>
   <description>urdf models converted from euslisp</description>
 
   <maintainer email="k-okada@jsk.t.u-tokyo.ac.jp">Kei Okada</maintainer>
@@ -23,6 +23,7 @@
 
   <run_depend>collada_urdf_jsk_patch</run_depend>
   <run_depend>gazebo_ros</run_depend>
+  <run_depend>python-lxml</run_depend>
   <run_depend>rostest</run_depend>
 
   <export>
