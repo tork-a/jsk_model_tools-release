@@ -1,0 +1,12 @@
+Source: ros-kinetic-eusurdf
+Section: misc
+Priority: extra
+Maintainer: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), python-lxml, ros-kinetic-catkin, ros-kinetic-collada-urdf, ros-kinetic-roseus, ros-kinetic-rostest
+Homepage: http://ros.org/wiki/eusurdf
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-eusurdf
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-lxml, ros-kinetic-collada-urdf, ros-kinetic-gazebo-ros, ros-kinetic-rostest
+Description: urdf models converted from euslisp
