@@ -2,6 +2,11 @@
 Changelog for package eusurdf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.4 (2017-02-22)
+------------------
+* add python-lxml
+* Contributors: Kei Okada
+
 0.3.3 (2017-02-18)
 ------------------
 
