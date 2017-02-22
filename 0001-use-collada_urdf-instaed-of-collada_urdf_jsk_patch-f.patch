@@ -1,4 +1,4 @@
-From ec6d4259ba38abfcb26e9d2a4e79af7ae3f0450d Mon Sep 17 00:00:00 2001
+From 981810168ab68074e758ddee9fd859d5b8fd3872 Mon Sep 17 00:00:00 2001
 From: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
 Date: Sat, 18 Feb 2017 23:08:01 +0900
 Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
