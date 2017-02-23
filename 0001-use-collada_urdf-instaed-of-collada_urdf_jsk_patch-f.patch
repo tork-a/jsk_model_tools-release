@@ -1,4 +1,4 @@
-From 981810168ab68074e758ddee9fd859d5b8fd3872 Mon Sep 17 00:00:00 2001
+From 1f2c2ae5d931ba0242049159095552e664125bf5 Mon Sep 17 00:00:00 2001
 From: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
 Date: Sat, 18 Feb 2017 23:08:01 +0900
 Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
@@ -9,10 +9,10 @@ Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index 1a885f2..0136af2 100644
+index 95c44f5..f8fbaed 100644
 --- a/package.xml
 +++ b/package.xml
-@@ -17,11 +17,11 @@
+@@ -17,12 +17,12 @@
  
    <buildtool_depend>catkin</buildtool_depend>
  
@@ -20,6 +20,7 @@ index 1a885f2..0136af2 100644
 +  <build_depend>collada_urdf</build_depend>
    <build_depend>roseus</build_depend>
    <build_depend>rostest</build_depend>
+   <build_depend>python-lxml</build_depend>
  
 -  <run_depend>collada_urdf_jsk_patch</run_depend>
 +  <run_depend>collada_urdf</run_depend>
