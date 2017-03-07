@@ -20,3 +20,42 @@ roseus convert-eus-to-urdf.l
 ;; util wrapper function to convert room model
 (generate-room-models "room73b2")
 ```
+
+## Spawn scene model to gazebo
+
+- Use world file
+
+``` bash
+roslaunch gazebo_ros empty_world.launch world_name:=`rospack find eusurdf`/worlds/room73b2.world
+```
+
+- Use urdf.xacro file
+
+``` bash
+roslaunch gazebo_ros empty_world.launch
+roslaunch eusurdf gazebo_spawn_scene.launch scene:=room73b2
+```
+
+## Visualize gazebo scene to RViz
+
+1. Launch gazebo and RViz, and spawn scene model
+
+``` bash
+roslaunch gazebo_ros empty_world.launch
+roslaunch eusurdf gazebo_spawn_scene.launch scene:=room73b2 publish_tf:=true
+rviz # launch rviz
+```
+
+2. Add `RobotModel` to RViz, and configure
+
+- Set `Robot Description` to `room73b2/robot_description`
+- Set `TF Prefix` to `room73b2`
+
+3. Select Fixed Frame Appropriately
+
+## Apply changes of URDF in textured_models to urdf.xacro
+
+``` bash
+roscd eusurdf && ./textured_models/apply_to_xacro.sh
+```
+
