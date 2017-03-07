@@ -1,0 +1,12 @@
+Source: ros-jade-euscollada
+Section: misc
+Priority: extra
+Maintainer: Yohei Kakiuchi <youhei@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), collada-dom-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-jade-assimp-devel, ros-jade-catkin, ros-jade-cmake-modules, ros-jade-collada-parser, ros-jade-collada-urdf, ros-jade-mk, ros-jade-openhrp3, ros-jade-pr2-description, ros-jade-resource-retriever, ros-jade-rosboost-cfg, ros-jade-rosbuild, ros-jade-roscpp, ros-jade-roseus, ros-jade-rospack, ros-jade-rostest, ros-jade-tf, ros-jade-urdf
+Homepage: http://ros.org/wiki/euscollada
+Standards-Version: 3.9.2
+
+Package: ros-jade-euscollada
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, collada-dom-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-jade-assimp-devel, ros-jade-collada-parser, ros-jade-collada-urdf, ros-jade-resource-retriever, ros-jade-roscpp, ros-jade-rospack, ros-jade-rostest, ros-jade-tf, ros-jade-urdf
+Description: euscollada
