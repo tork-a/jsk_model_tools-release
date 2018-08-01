@@ -1,4 +1,4 @@
-From 14be1742b917f453f7a0245f9b06962e22cd1f31 Mon Sep 17 00:00:00 2001
+From d351cce282b85e7f493ccf5f6c08f5a01c6ba591 Mon Sep 17 00:00:00 2001
 From: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
 Date: Sat, 18 Feb 2017 23:08:01 +0900
 Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
@@ -9,7 +9,7 @@ Subject: [PATCH] use collada_urdf instaed of collada_urdf_jsk_patch for
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index ac78be0..8e52e88 100644
+index 0aa721d..0955fab 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -17,13 +17,13 @@
@@ -29,5 +29,5 @@ index ac78be0..8e52e88 100644
    <run_depend>python-lxml</run_depend>
    <run_depend>rostest</run_depend>
 -- 
-2.7.4
+1.9.0
 
