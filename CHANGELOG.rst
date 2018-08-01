@@ -2,6 +2,9 @@
 Changelog for package eusurdf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.4.1 (2018-08-01)
+------------------
+
 0.4.0 (2018-07-25)
 ------------------
 * [eusurdf] add cmake target for generating Semantic map from eusmodel (`#194 <https://github.com/jsk-ros-pkg/jsk_model_tools/issues/194>`_)
