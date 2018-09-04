@@ -1,3 +1,30 @@
+## jsk_model_tools (kinetic) - 0.4.2-0
+
+The packages in the `jsk_model_tools` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release -y jsk_model_tools --rosdistro kinetic --track kinetic` on `Tue, 04 Sep 2018 06:42:29 -0000`
+
+These packages were released:
+- `eus_assimp`
+- `euscollada`
+- `eusurdf`
+- `jsk_model_tools`
+
+Version of package(s) in repository `jsk_model_tools`:
+
+- upstream repository: https://github.com/jsk-ros-pkg/jsk_model_tools
+- release repository: https://github.com/tork-a/jsk_model_tools-release.git
+- rosdistro version: `0.4.1-0`
+- old version: `0.4.1-0`
+- new version: `0.4.2-0`
+
+Versions of tools used:
+
+- bloom version: `0.6.6`
+- catkin_pkg version: `0.4.8`
+- rosdep version: `0.12.2`
+- rosdistro version: `0.6.9`
+- vcstools version: `0.1.40`
+
+
 ## jsk_model_tools (indigo) - 0.4.2-0
 
 The packages in the `jsk_model_tools` repository were released into the `indigo` distro by running `/usr/bin/bloom-release -y jsk_model_tools --rosdistro indigo --track indigo` on `Tue, 04 Sep 2018 06:38:38 -0000`
