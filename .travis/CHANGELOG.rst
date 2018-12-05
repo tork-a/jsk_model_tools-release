@@ -2,6 +2,47 @@
 Changelog for package jsk_travis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.4.40 (2018-11-10)
+-------------------
+* put fix_error branch on master, see `#361 <https://github.com/jsk-ros-pkg/jsk_travis/issues/361>`_ (`#362 <https://github.com/jsk-ros-pkg/jsk_travis/issues/362>`_)
+  * fix dpkg-deb: error: archive has premature member 'control.tar.xz' before 'control.tar.gz' `#9361 <https://github.com/jsk-ros-pkg/jsk_travis/issues/9361>`_
+  https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262
+  * this has been released as rosdep 0.13.0 -> https://github.com/ros-infrastructure/rosdep/pull/612#issuecomment-436774123
+* Contributors: Kei Okada
+
+0.4.39 (2018-10-26)
+-------------------
+* Enable rosdep quiet mode
+  * remove redundant messages from rosdep install
+  * apply https://github.com/ros-infrastructure/rosdep/pull/612 to enable rosdep quiet mode
+* Contributors: Kei Okada
+
+0.4.38 (2018-07-13)
+-------------------
+* Add melodic `#358 <https://github.com/jsk-ros-pkg/jsk_travis/issues/358>`_
+  * add DEBIAN_FRONTEND=noninteractive to travis.sh, see https://api.travis-ci.org/v3/job/402555750/log.txt for error case
+  * add test for melodic
+  * add support for melodic
+* Contributors: Kei Okada
+
+0.4.37 (2018-04-27)
+-------------------
+* Merge pull request `#355 <https://github.com/jsk-ros-pkg/jsk_travis/issues/355>`_ from wkentaro/pip9
+  Install pip<10
+* Install pip<10
+  Currently pip==10.0.1 is installed.
+  https://github.com/jsk-ros-pkg/jsk_recognition/pull/2280#issuecomment-384681527
+* Contributors: Kei Okada, Kentaro Wada
+
+0.4.36 (2018-04-24)
+-------------------
+* Merge pull request `#354 <https://github.com/jsk-ros-pkg/jsk_travis/issues/354>`_ from k-okada/fix_jenkins
+  need to upgrade when install python-jenkins
+* get-pip.py installs pip, so we do not need pip install pip
+* use 0.4.16 of python-jenkins
+* need to upgrade when install python-jenkins
+* Contributors: Kei Okada
+
 0.4.35 (2017-12-30)
 -------------------
 * Merge pull request `#353 <https://github.com/jsk-ros-pkg/jsk_travis/issues/353>`_ from k-okada/exit_rosdep

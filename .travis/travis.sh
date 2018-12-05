@@ -71,6 +71,7 @@ if [ "$USE_DOCKER" = true ]; then
       hydro) DISTRO=precise;;
       indigo|jade) DISTRO=trusty;;
       kinetic|lunar) DISTRO=xenial;;
+      melodic) DISTRO=bionic;;
       *) DISTRO=trusty;;
     esac
     export DOCKER_IMAGE=ubuntu:$DISTRO
@@ -110,7 +111,7 @@ if [ "$USE_DOCKER" = true ]; then
 fi
 
 if [ "$USE_TRAVIS" != "true" ] && [ "$ROS_DISTRO" != "hydro" -o "${USE_JENKINS}" == "true" ] && [ "$TRAVIS_JOB_ID" ]; then
-    pip install --user python-jenkins -q
+    pip install --user -U python-jenkins==0.4.16 -q
     ./.travis/travis_jenkins.py
     exit $?
 fi
@@ -139,13 +140,19 @@ echo "Testing branch $TRAVIS_BRANCH of $REPOSITORY_NAME"
 
 # Install pip
 curl https://bootstrap.pypa.io/get-pip.py | sudo python -
-sudo -E pip install -U -q pip setuptools
+# pip>=10 no longer uninstalls distutils packages (ex. packages installed via apt),
+# and fails to install packages via pip if they are already installed via apt.
+# See https://github.com/pypa/pip/issues/4805 for detail.
+sudo -H pip install 'pip<10'
 
+# set DEBIAN_FRONTEND=noninteractive
+echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
 # Setup apt
 sudo -E sh -c 'echo "deb $ROS_REPOSITORY_PATH `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list'
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 lsb_release -a
 sudo apt-get update -q || echo Ignore error of apt-get update
+sudo apt-get install -y --force-yes -q -qq dpkg # https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262 dpkg-deb: error: archive has premature member 'control.tar.xz' before 'control.tar.gz' #9361
 sudo apt-get install -y --force-yes -q -qq python-rosdep python-wstool python-catkin-tools ros-$ROS_DISTRO-rosbash ros-$ROS_DISTRO-rospack ccache
 # setup catkin-tools option
 if [ ! "$CATKIN_TOOLS_BUILD_OPTIONS" ]; then
