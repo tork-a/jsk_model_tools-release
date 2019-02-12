@@ -1,0 +1,12 @@
+Source: ros-lunar-eusurdf
+Section: misc
+Priority: extra
+Maintainer: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), python-lxml, ros-lunar-catkin, ros-lunar-collada-urdf-jsk-patch, ros-lunar-gazebo-ros, ros-lunar-roseus, ros-lunar-rostest
+Homepage: http://ros.org/wiki/eusurdf
+Standards-Version: 3.9.2
+
+Package: ros-lunar-eusurdf
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-lxml, ros-lunar-collada-urdf-jsk-patch, ros-lunar-gazebo-ros, ros-lunar-rostest
+Description: urdf models converted from euslisp
