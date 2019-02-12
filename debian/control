@@ -1,0 +1,12 @@
+Source: ros-lunar-euscollada
+Section: misc
+Priority: extra
+Maintainer: Yohei Kakiuchi <youhei@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-lunar-assimp-devel, ros-lunar-catkin, ros-lunar-cmake-modules, ros-lunar-collada-parser, ros-lunar-collada-urdf, ros-lunar-mk, ros-lunar-openhrp3, ros-lunar-pr2-description, ros-lunar-resource-retriever, ros-lunar-rosboost-cfg, ros-lunar-rosbuild, ros-lunar-roscpp, ros-lunar-roseus, ros-lunar-rospack, ros-lunar-rostest, ros-lunar-tf, ros-lunar-urdf
+Homepage: http://ros.org/wiki/euscollada
+Standards-Version: 3.9.2
+
+Package: ros-lunar-euscollada
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-lunar-assimp-devel, ros-lunar-collada-parser, ros-lunar-collada-urdf, ros-lunar-resource-retriever, ros-lunar-roscpp, ros-lunar-rospack, ros-lunar-rostest, ros-lunar-tf, ros-lunar-urdf
+Description: euscollada
