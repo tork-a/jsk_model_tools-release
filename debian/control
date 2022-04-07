@@ -1,0 +1,12 @@
+Source: ros-noetic-euscollada
+Section: misc
+Priority: optional
+Maintainer: Yohei Kakiuchi <youhei@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-noetic-assimp-devel, ros-noetic-catkin, ros-noetic-cmake-modules, ros-noetic-collada-parser, ros-noetic-collada-urdf, ros-noetic-mk, ros-noetic-openhrp3, ros-noetic-pr2-description, ros-noetic-resource-retriever, ros-noetic-rosboost-cfg, ros-noetic-rosbuild, ros-noetic-roscpp, ros-noetic-roseus, ros-noetic-rospack, ros-noetic-rostest, ros-noetic-tf, ros-noetic-urdf
+Homepage: http://ros.org/wiki/euscollada
+Standards-Version: 3.9.2
+
+Package: ros-noetic-euscollada
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-noetic-assimp-devel, ros-noetic-collada-parser, ros-noetic-collada-urdf, ros-noetic-resource-retriever, ros-noetic-roscpp, ros-noetic-rospack, ros-noetic-rostest, ros-noetic-tf, ros-noetic-urdf
+Description: euscollada
