@@ -1,0 +1,12 @@
+Source: ros-melodic-euscollada
+Section: misc
+Priority: optional
+Maintainer: Yohei Kakiuchi <youhei@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-melodic-assimp-devel, ros-melodic-catkin, ros-melodic-cmake-modules, ros-melodic-collada-parser, ros-melodic-collada-urdf, ros-melodic-mk, ros-melodic-openhrp3 <!nocheck>, ros-melodic-pr2-description <!nocheck>, ros-melodic-resource-retriever, ros-melodic-rosboost-cfg, ros-melodic-rosbuild, ros-melodic-roscpp, ros-melodic-roseus <!nocheck>, ros-melodic-rospack, ros-melodic-rostest, ros-melodic-tf, ros-melodic-urdf
+Homepage: http://ros.org/wiki/euscollada
+Standards-Version: 3.9.2
+
+Package: ros-melodic-euscollada
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcollada-dom2.4-dp-dev, libqhull-dev, liburdfdom-dev, libyaml-cpp-dev, ros-melodic-assimp-devel, ros-melodic-collada-parser, ros-melodic-collada-urdf, ros-melodic-resource-retriever, ros-melodic-roscpp, ros-melodic-rospack, ros-melodic-rostest, ros-melodic-tf, ros-melodic-urdf
+Description: euscollada
