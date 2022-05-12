@@ -1,0 +1,12 @@
+Source: ros-melodic-eusurdf
+Section: misc
+Priority: optional
+Maintainer: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 9.0.0), python-lxml, ros-melodic-catkin, ros-melodic-collada-urdf-jsk-patch, ros-melodic-gazebo-ros, ros-melodic-roseus, ros-melodic-rostest
+Homepage: http://ros.org/wiki/eusurdf
+Standards-Version: 3.9.2
+
+Package: ros-melodic-eusurdf
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-lxml, ros-melodic-collada-urdf-jsk-patch, ros-melodic-gazebo-ros, ros-melodic-rostest
+Description: urdf models converted from euslisp
