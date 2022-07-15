@@ -1,0 +1,27 @@
+From 6546efebc8563d5482c9482792cfa80b1bc8d593 Mon Sep 17 00:00:00 2001
+From: Kei Okada <k-okada@jsk.t.u-tokyo.ac.jp>
+Date: Fri, 15 Jul 2022 15:18:26 +0900
+Subject: [PATCH] apply
+ https://github.com/jsk-ros-pkg/jsk_model_tools/pull/247, On Noetic build
+ environment, only python3 is available
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 589a538e..008a6844 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4,7 +4,7 @@ project(euscollada)
+ 
+ # check rosversion if >=indigo
+ execute_process(
+-  COMMAND python -c "import sys; sys.exit(ord('$ENV{ROS_DISTRO}'[0]) >= ord('indigo'[0]))"
++  COMMAND python$ENV{ROS_PYTHON_VERSION} -c "import sys; sys.exit(ord('$ENV{ROS_DISTRO}'[0]) >= ord('indigo'[0]))"
+   RESULT_VARIABLE rosversion_ge_indigo)
+ 
+ # noetic collada_urdf could not find_packag-ed due to https://github.com/ros/collada_urdf/issues/43
+-- 
+2.17.1
+
