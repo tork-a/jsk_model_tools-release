@@ -1,3 +1,30 @@
+## jsk_model_tools (noetic) - 0.4.5-1
+
+The packages in the `jsk_model_tools` repository were released into the `noetic` distro by running `/usr/bin/bloom-release jsk_model_tools --rosdistro noetic --track noetic` on `Thu, 30 Nov 2023 10:24:19 -0000`
+
+These packages were released:
+- `eus_assimp`
+- `euscollada`
+- `eusurdf`
+- `jsk_model_tools`
+
+Version of package(s) in repository `jsk_model_tools`:
+
+- upstream repository: https://github.com/jsk-ros-pkg/jsk_model_tools
+- release repository: https://github.com/tork-a/jsk_model_tools-release.git
+- rosdistro version: `0.4.4-2`
+- old version: `0.4.4-2`
+- new version: `0.4.5-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.1`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## jsk_model_tools (noetic) - 0.4.4-2
 
 The packages in the `jsk_model_tools` repository were released into the `noetic` distro by running `/usr/bin/bloom-release jsk_model_tools --track noetic --rosdistro noetic` on `Fri, 15 Jul 2022 06:20:37 -0000`
